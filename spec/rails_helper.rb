@@ -5,22 +5,35 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
-# Add additional requires below this line. Rails is not loaded until this point!
+require 'capybara/rspec'
+require 'capybara/poltergeist'
 
-# Requires supporting ruby files with custom matchers and macros, etc, in
-# spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
-# run as spec files by default. This means that files in spec/support that end
-# in _spec.rb will both be required and run as specs, causing the specs to be
-# run twice. It is recommended that you do not name files matching this glob to
-# end with _spec.rb. You can configure this pattern with the --pattern
-# option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
-#
-# The following line is provided for convenience purposes. It has the downside
-# of increasing the boot-up time by auto-requiring all files in the support
-# directory. Alternatively, in the individual `*_spec.rb` files, manually
-# require only the support files necessary.
-#
-# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+if ENV['TEST_ENV_NUMBER']
+  Capybara.server_port = 9887 + ENV['TEST_ENV_NUMBER'].to_i
+end
+
+Capybara.default_wait_time = 10
+
+Capybara.javascript_driver = :poltergeist
+Capybara.register_driver(:poltergeist) do |app|
+  Capybara::Poltergeist::Driver.new(
+    app,
+    {
+      js_errors: false,
+      timeout: 180,
+      phantomjs_logger: StringIO.new,
+      logger: nil,
+      phantomjs_options: ['--load-images=no', '--ignore-ssl-errors=yes']
+    }
+  )
+end
+
+Capybara.register_driver :selenium_chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+# in ./support/ and its subdirectories.
+Dir[Rails.root.join('spec/support/**/*.rb')].each {|f| require f}
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -34,6 +47,20 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+
+  config.with_options type: :feature do |f|
+    f.include Capybara::Helpers
+  end
+
+  config.before(:all) do
+    ActiveRecord::Base.observers.disable :all
+  end
+
+  config.after(:all) do
+    ActiveRecord::Base.observers.disable :all
+  end
+
+  config.include FactoryGirl::Syntax::Methods
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
