@@ -12,6 +12,11 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem 'grape'
+gem 'grape-entity'
+gem 'grape-swagger'
+gem 'grape-swagger-ui'
+
 group :test, :development do
   gem 'awesome_print'
   gem 'table_print'
