@@ -1,6 +1,6 @@
 module APIHelpers
   def api(url, version = 'v1')
-    "/api/#{version}/#{url}#{url.index('?') ? '' : '?'}&api_token=#{api_key.access_token}"
+    "/api/#{version}/#{url}#{url.index('?') ? '' : '?'}&api_key=#{api_key.access_token}"
   end
 
   def api_key
@@ -12,7 +12,7 @@ module APIHelpers
   end
 
   def json_response
-    JSON.parse(response.body).with_indifferent_access
+    JSON.parse(response.body)
   end
 end
 

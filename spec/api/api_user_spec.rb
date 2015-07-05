@@ -14,9 +14,9 @@ describe V1::ApiUsers, type: :request do
         post api('/users/authentication'), params
 
         expect(response.status).to eq(201)
-        expect(json_response[:oauth_token]).to eq('oauth_token')
-        expect(json_response[:provider]).to eq('facebook')
-        expect(json_response[:email]).to eq('email@mail.com')
+        expect(json_response['oauth_token']).to eq('oauth_token')
+        expect(json_response['provider']).to eq('facebook')
+        expect(json_response['email']).to eq('email@mail.com')
       end
     end
 

@@ -15,7 +15,7 @@ describe 'ApiKey', type: :request do
         get api('/ping')
 
         expect(response.status).to eq(200)
-        expect(json_response[:ping]).to eq('pong')
+        expect(json_response['ping']).to eq('pong')
       end
     end
   end
