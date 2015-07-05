@@ -52,14 +52,6 @@ RSpec.configure do |config|
     f.include Capybara::Helpers
   end
 
-  config.before(:all) do
-    ActiveRecord::Base.observers.disable :all
-  end
-
-  config.after(:all) do
-    ActiveRecord::Base.observers.disable :all
-  end
-
   config.include FactoryGirl::Syntax::Methods
 
   # RSpec Rails can automatically mix in different behaviours to your tests

@@ -3,7 +3,7 @@ require 'grape-swagger'
 class API < Grape::API
   helpers do
     def authenticate!
-      token = request.headers['Api-Token'] || params[:api_key]
+      token = request.headers['Api-Token'] || params[:api_token]
 
       unless ApiKey.exists?(access_token: token)
         error!('Unauthorized. Invalid or expired token.', 401)

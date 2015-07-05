@@ -5,5 +5,6 @@ module V1
     prefix 'api'
 
     mount ApiPing
+    mount ApiUsers
   end
 end
