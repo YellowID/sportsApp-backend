@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150705162911) do
+ActiveRecord::Schema.define(version: 20150705173506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,20 @@ ActiveRecord::Schema.define(version: 20150705162911) do
   end
 
   add_index "api_keys", ["access_token"], name: "index_api_keys_on_access_token", using: :btree
+
+  create_table "games", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "sport_type_id"
+    t.datetime "start_at"
+    t.integer  "age"
+    t.integer  "numbers"
+    t.integer  "level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "games", ["sport_type_id"], name: "index_games_on_sport_type_id", using: :btree
+  add_index "games", ["user_id"], name: "index_games_on_user_id", using: :btree
 
   create_table "sport_types", force: :cascade do |t|
     t.string "name"

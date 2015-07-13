@@ -7,5 +7,6 @@ module V1
     mount ApiPing
     mount ApiUsers
     mount ApiSportType
+    mount ApiGames
   end
 end

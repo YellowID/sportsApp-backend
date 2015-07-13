@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   validates :oauth_token, :provider, presence: true
 
+  has_many :games
+
   def chat_password=(unhashed_password)
     write_attribute(:chat_password, encryptor.encrypt_and_sign(unhashed_password))
   end

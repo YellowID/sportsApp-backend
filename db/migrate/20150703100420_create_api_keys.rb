@@ -3,7 +3,7 @@ class CreateApiKeys < ActiveRecord::Migration
     create_table :api_keys do |t|
       t.string :access_token
 
-      t.timestamp
+      t.timestamps
     end
 
      add_index :api_keys, :access_token
