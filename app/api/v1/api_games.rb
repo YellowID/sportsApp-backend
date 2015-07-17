@@ -15,7 +15,9 @@ module V1
     resource :users do
       route_param :user_id do
         resource :games do
-          desc 'Create new game'
+          desc 'Create new game', {
+            entity: Entities::Game
+          }
 
           params do
             requires :sport_type_id, type: Integer
@@ -37,6 +39,43 @@ module V1
             )
 
             present game, with: Entities::Game
+          end
+
+          route_param :id do
+            desc 'Edit game', {
+              entity: Entities::Game
+            }
+
+            params do
+              optional :start_at, type: DateTime
+              optional :age, type: Integer
+              optional :numbers, type: Integer
+              optional :level, type: Integer
+            end
+
+            patch do
+              attributes = %i(start_at age numbers level).each_with_object({}) do |param, hs|
+                hs[param] = params[param] if params.has_key?(param)
+              end
+
+              user = User.find(params[:user_id])
+
+              game = user.games.find(params[:id])
+
+              game.update(attributes)
+
+              present game, with: Entities::Game
+            end
+
+            desc 'Destroy game'
+
+            delete do
+              user = User.find(params[:user_id])
+
+              user.games.find(params[:id]).destroy!
+
+              { result: :success }
+            end
           end
         end
       end

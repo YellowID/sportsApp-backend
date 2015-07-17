@@ -3,8 +3,9 @@ require 'rails_helper'
 describe V1::ApiGames, type: :request do
   include APIHelpers
 
+  let(:user) { create(:user) }
+
   describe 'POST /users/:user_id/games' do
-    let(:user) { create(:user) }
     let!(:sport_type) { create(:sport_type) }
 
     context 'when data is valid' do
@@ -41,4 +42,32 @@ describe V1::ApiGames, type: :request do
       end
     end
   end
+
+  describe 'DELETE /users/:user_id/games/:id' do
+    let(:game) { create(:game, user: user) }
+
+    it 'delete game' do
+      delete api("/users/#{user.id}/games/#{game.id}")
+
+      expect(response.status).to eq(200)
+      expect(json_response['result']).to eq('success')
+    end
+  end
+
+  describe 'PATCH /users/:user_id/games/:id' do
+    let(:game) { create(:game, user: user, age: 19, numbers: 5) }
+
+    it 'create new game' do
+      params =  {
+        age: 21
+      }
+
+      patch api("/users/#{user.id}/games/#{game.id}"), params
+
+      expect(response.status).to eq(200)
+      expect(json_response['age']).to eq(21)
+      expect(json_response['numbers']).to eq(5)
+    end
+  end
+
 end
