@@ -28,9 +28,7 @@ module V1
           end
 
           post do
-            user = User.find(params[:user_id])
-
-            game = user.games.create!(
+            game = current_user.games.create!(
               sport_type_id: params[:sport_type_id],
               start_at: params[:start_at],
               age: params[:age],
@@ -40,6 +38,10 @@ module V1
 
             present game, with: Entities::Game
           end
+
+          desc 'Games List', {
+            entity: Entities::Game
+          }
 
           route_param :id do
             desc 'Edit game', {
@@ -58,9 +60,7 @@ module V1
                 hs[param] = params[param] if params.has_key?(param)
               end
 
-              user = User.find(params[:user_id])
-
-              game = user.games.find(params[:id])
+              game = current_user.games.find(params[:id])
 
               game.update(attributes)
 
@@ -70,11 +70,9 @@ module V1
             desc 'Destroy game'
 
             delete do
-              user = User.find(params[:user_id])
+              current_user.games.find(params[:id]).destroy!
 
-              user.games.find(params[:id]).destroy!
-
-              { result: :success }
+              result_success
             end
           end
         end

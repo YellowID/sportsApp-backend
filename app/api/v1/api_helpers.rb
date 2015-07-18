@@ -1,5 +1,9 @@
 module V1
   module APIHelpers
+    def current_user
+      @user ||= User.find(params[:user_id])
+    end
+
     def unauthorized!
       error!('401 Unauthorized', 401)
     end
