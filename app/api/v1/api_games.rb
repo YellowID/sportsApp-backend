@@ -15,6 +15,16 @@ module V1
     resource :users do
       route_param :user_id do
         resource :games do
+          desc 'Games List', {
+            entity: Entities::Game
+          }
+
+          get do
+            games = current_user.games
+
+            present games, with: Entities::Game
+          end
+
           desc 'Create new game', {
             entity: Entities::Game
           }
@@ -38,10 +48,6 @@ module V1
 
             present game, with: Entities::Game
           end
-
-          desc 'Games List', {
-            entity: Entities::Game
-          }
 
           route_param :id do
             desc 'Edit game', {

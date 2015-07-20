@@ -70,4 +70,13 @@ describe V1::ApiGames, type: :request do
     end
   end
 
+  describe 'GET /users/:user_id/games' do
+    let(:game) { create(:game, user: user, age: 19, numbers: 5) }
+
+    it 'gets games list' do
+      get api("/users/#{user.id}/games")
+
+      expect(response.status).to eq(200)
+    end
+  end
 end
