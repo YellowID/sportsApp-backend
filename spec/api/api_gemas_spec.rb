@@ -5,7 +5,7 @@ describe V1::ApiGames, type: :request do
 
   let(:user) { create(:user) }
 
-  describe 'POST /users/:user_id/games' do
+  describe 'POST /games' do
     let!(:sport_type) { create(:sport_type) }
 
     context 'when data is valid' do
@@ -18,7 +18,7 @@ describe V1::ApiGames, type: :request do
           level: 1
         }
 
-        post api("/users/#{user.id}/games"), params
+        post api("/games", user), params
 
         expect(response.status).to eq(201)
         expect(json_response['age']).to eq(21)
@@ -36,25 +36,25 @@ describe V1::ApiGames, type: :request do
           level: 1
         }
 
-        post api("/users/#{user.id}/games"), params
+        post api("/games", user), params
 
         expect(response.status).to eq(400)
       end
     end
   end
 
-  describe 'DELETE /users/:user_id/games/:id' do
+  describe 'DELETE /games/:id' do
     let(:game) { create(:game, user: user) }
 
     it 'delete game' do
-      delete api("/users/#{user.id}/games/#{game.id}")
+      delete api("/games/#{game.id}", user)
 
       expect(response.status).to eq(200)
       expect(json_response['result']).to eq('success')
     end
   end
 
-  describe 'PATCH /users/:user_id/games/:id' do
+  describe 'PATCH /games/:id' do
     let(:game) { create(:game, user: user, age: 19, numbers: 5) }
 
     it 'create new game' do
@@ -62,7 +62,7 @@ describe V1::ApiGames, type: :request do
         age: 21
       }
 
-      patch api("/users/#{user.id}/games/#{game.id}"), params
+      patch api("/games/#{game.id}", user), params
 
       expect(response.status).to eq(200)
       expect(json_response['age']).to eq(21)
@@ -70,11 +70,11 @@ describe V1::ApiGames, type: :request do
     end
   end
 
-  describe 'GET /users/:user_id/games' do
+  describe 'GET /games' do
     let(:game) { create(:game, user: user, age: 19, numbers: 5) }
 
     it 'gets games list' do
-      get api("/users/#{user.id}/games")
+      get api("/games", user)
 
       expect(response.status).to eq(200)
     end

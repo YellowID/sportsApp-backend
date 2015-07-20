@@ -1,6 +1,7 @@
 module APIHelpers
-  def api(url, version = 'v1')
-    "/api/#{version}/#{url}#{url.index('?') ? '' : '?'}&api_key=#{api_key.access_token}"
+  def api(url, user = nil, version = 'v1')
+    custome_url = "/api/#{version}/#{url}#{url.index('?') ? '' : '?'}&api_key=#{api_key.access_token}"
+    user ? custome_url << "&user_token=#{user.token}" : custome_url
   end
 
   def api_key

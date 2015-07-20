@@ -5,6 +5,7 @@ FactoryGirl.define do
     provider 'facebook'
     oauth_token '123asd123'
     chat_password '12345678'
+    token { SecureRandom.urlsafe_base64(nil, false) }
   end
 end
 

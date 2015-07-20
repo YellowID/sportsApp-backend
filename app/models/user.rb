@@ -17,6 +17,15 @@ class User < ActiveRecord::Base
     encryptor.decrypt_and_verify(read_attribute(:chat_password))
   end
 
+  def generate_token!
+    access_token = loop do
+      random_token = SecureRandom.urlsafe_base64(nil, false)
+      break random_token unless User.exists?(token: random_token)
+    end
+
+    update!(token: access_token)
+  end
+
   private
 
   def encryptor

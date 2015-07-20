@@ -1,7 +1,7 @@
 module V1
   module APIHelpers
     def current_user
-      @user ||= User.find(params[:user_id])
+      @user ||= User.find_by(token: params[:user_token])
     end
 
     def unauthorized!
