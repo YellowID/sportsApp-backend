@@ -2,6 +2,12 @@ class User < ActiveRecord::Base
   validates :oauth_token, :provider, presence: true
 
   has_many :games
+  has_many :user_sport_type_settings
+  has_many :sport_types, through: :user_sport_type_settings
+
+  def sport_setting(sport_type)
+    user_sport_type_settings.find_by(sport_type: sport_type)
+  end
 
   def chat_password=(unhashed_password)
     write_attribute(:chat_password, encryptor.encrypt_and_sign(unhashed_password))

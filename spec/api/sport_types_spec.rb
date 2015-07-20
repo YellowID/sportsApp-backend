@@ -14,6 +14,6 @@ describe V1::ApiSportType, type: :request do
       expect(json_response.count).to eq(2)
     end
   end
-end
+ end
 
 
