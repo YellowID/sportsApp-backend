@@ -8,6 +8,7 @@ module V1
       expose(:age, documentation: { type: 'integer' })
       expose(:numbers, documentation: { type: 'integer' })
       expose(:level, documentation: { type: 'string' })
+      expose(:members, using: Entities::User)
     end
   end
 
@@ -48,6 +49,8 @@ module V1
           level: params[:level]
         )
 
+        current_user.foreign_games << game
+
         present game, with: Entities::Game
       end
 
@@ -79,6 +82,16 @@ module V1
 
         delete do
           current_user.games.find(params[:id]).destroy!
+
+          result_success
+        end
+
+        desc 'Add member'
+
+        post :member do
+          game = Game.find(params[:id])
+
+          game.members << current_user
 
           result_success
         end

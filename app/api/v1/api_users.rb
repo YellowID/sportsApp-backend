@@ -3,6 +3,13 @@ module V1
     class User < Grape::Entity
       expose(:id, documentation: { type: 'integer' })
       expose(:provider, documentation: { type: 'string' })
+      expose(:email, documentation: { type: 'string' })
+      expose(:name, documentation: { type: 'string' })
+    end
+
+    class FullUser < Grape::Entity
+      expose(:id, documentation: { type: 'integer' })
+      expose(:provider, documentation: { type: 'string' })
       expose(:oauth_token, documentation: { type: 'string' })
       expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
@@ -40,7 +47,7 @@ module V1
 
         user.generate_token!
 
-        present user, with: Entities::User
+        present user, with: Entities::FullUser
       end
 
       params do
