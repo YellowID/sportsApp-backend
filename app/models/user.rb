@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   has_many :sport_types, through: :user_sport_type_settings
 
   has_many :game_members
-  has_many :foreign_games, through: :game_members, source: :game
+  has_many :participate_games, through: :game_members, source: :game
 
   def sport_setting(sport_type)
     user_sport_type_settings.find_by(sport_type: sport_type)

@@ -88,7 +88,7 @@ describe V1::ApiGames, type: :request do
       post api("/games/#{game.id}/member", member)
 
       expect(response.status).to eq(201)
-      expect(member.foreign_games.to_a.include?(game)).to be_truthy
+      expect(member.participate_games.to_a.include?(game)).to be_truthy
     end
   end
 

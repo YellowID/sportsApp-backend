@@ -2,6 +2,15 @@ module V1
   module Entities
     class Game < Grape::Entity
       expose(:id, documentation: { type: 'integer' })
+      expose(:sport_type, using: Entities::SportType)
+      expose(:start_at, documentation: { type: 'string' })
+      expose(:age, documentation: { type: 'integer' })
+      expose(:numbers, documentation: { type: 'integer' })
+      expose(:level, documentation: { type: 'string' })
+    end
+
+    class FullGame < Grape::Entity
+      expose(:id, documentation: { type: 'integer' })
       expose(:user, using: Entities::User)
       expose(:sport_type, using: Entities::SportType)
       expose(:start_at, documentation: { type: 'string' })
@@ -23,7 +32,7 @@ module V1
       }
 
       get do
-        games = current_user.games
+        games = current_user.participate_games
 
         present games, with: Entities::Game
       end
@@ -49,12 +58,22 @@ module V1
           level: params[:level]
         )
 
-        current_user.foreign_games << game
+        current_user.participate_games << game
 
         present game, with: Entities::Game
       end
 
       route_param :id do
+        desc 'Get Game', {
+          entity: Entities::FullGame
+        }
+
+        get do
+          game = Game.find(params[:id])
+
+          present game, with: Entities::FullGame
+        end
+
         desc 'Edit game', {
           entity: Entities::Game
         }
@@ -86,14 +105,40 @@ module V1
           result_success
         end
 
-        desc 'Add member'
+        resource :member do
 
-        post :member do
-          game = Game.find(params[:id])
+          desc 'take participate in game'
 
-          game.members << current_user
+          post do
+            game = Game.find(params[:id])
 
-          result_success
+            game.members << current_user
+
+            result_success
+          end
+
+          desc 'Leave game'
+
+          delete do
+            game = Game.find(params[:id])
+
+            game.members.delete(current_user)
+
+            result_success
+          end
+
+          desc 'refuse member in game'
+
+          route_param :member_id do
+            delete do
+              game = current_user.games.find(params[:id])
+              member = User.find(params[:member_id])
+
+              game.members.delete(member)
+
+              result_success
+            end
+          end
         end
       end
     end
