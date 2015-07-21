@@ -2,6 +2,7 @@ module V1
   module Entities
     class Game < Grape::Entity
       expose(:id, documentation: { type: 'integer' })
+      expose(:user, using: Entities::User)
       expose(:sport_type, using: Entities::SportType)
       expose(:start_at, documentation: { type: 'string' })
       expose(:age, documentation: { type: 'integer' })

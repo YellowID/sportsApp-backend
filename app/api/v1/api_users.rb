@@ -5,6 +5,7 @@ module V1
       expose(:provider, documentation: { type: 'string' })
       expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
+      expose(:age, documentation: { type: 'integer' })
     end
 
     class FullUser < Grape::Entity
@@ -13,6 +14,7 @@ module V1
       expose(:oauth_token, documentation: { type: 'string' })
       expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
+      expose(:age, documentation: { type: 'integer' })
       expose(:token, documentation: { type: 'string' })
       expose(:chat_password, documentation: { type: 'string' })
     end
@@ -48,6 +50,16 @@ module V1
         user.generate_token!
 
         present user, with: Entities::FullUser
+      end
+
+      route_param :id do
+        desc 'Get  ser info'
+
+        get do
+          user = User.find(params[:id])
+
+          present user, with: Entities::User
+        end
       end
 
       params do

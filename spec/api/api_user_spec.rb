@@ -43,5 +43,16 @@ describe V1::ApiUsers, type: :request do
       expect(user.reload.age).to eq(2)
     end
   end
+
+  describe 'GEt /users/:id' do
+    let(:user) { create(:user, age: 1) }
+
+    it 'changes age' do
+      get api("/users/#{user.id}")
+
+      expect(response.status).to eq(200)
+      expect(json_response['id']).to eq(user.id)
+    end
+  end
 end
 

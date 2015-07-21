@@ -16,6 +16,10 @@ module V1
         present sport_types, with: Entities::SportType
       end
 
+      params do
+        requires :user_token, type: String
+      end
+
       route_param :id do
         desc 'Set sport types level'
 
@@ -27,9 +31,14 @@ module V1
           sport_type = SportType.find(params[:id])
           setting = current_user.sport_setting(sport_type)
 
-          setting.update(level: params[:level])
+          if setting.present?
+            setting.update(level: params[:level])
 
-          result_success
+            result_success
+
+          else
+            error!('User doesn\'t have this sport type', 404)
+          end
         end
 
         desc 'Get sport types level'
@@ -38,7 +47,7 @@ module V1
           sport_type = SportType.find(params[:id])
           setting = current_user.sport_setting(sport_type)
 
-          present level: setting.level
+          present level: setting.try(:level)
         end
       end
     end
