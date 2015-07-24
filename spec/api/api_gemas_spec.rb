@@ -10,12 +10,18 @@ describe V1::ApiGames, type: :request do
 
     context 'when data is valid' do
       it 'create new game' do
-        params =  {
+        params = {
           sport_type_id: sport_type.id,
           start_at: '10.10.2015',
           age: 21,
           numbers: 10,
-          level: 1
+          level: 1,
+          title: 'title',
+          country: 'Country',
+          city: 'City',
+          address: 'Address',
+          latitude: 2.12321,
+          longitude: 4.1232
         }
 
         post api("/games", user), params
@@ -24,6 +30,7 @@ describe V1::ApiGames, type: :request do
         expect(json_response['age']).to eq(21)
         expect(json_response['numbers']).to eq(10)
         expect(json_response['sport_type']['name']).to eq(sport_type.name)
+        expect(json_response['city']).to eq('City')
       end
     end
 

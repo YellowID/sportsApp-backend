@@ -5,5 +5,6 @@ class Game < ActiveRecord::Base
   has_many :members, through: :game_members, source: :user
 
   validates :user, :sport_type, :age, :start_at,
-            :level, :numbers, presence: true
+    :level, :numbers, :title, :country, :city, :address,
+    :latitude, :longitude, presence: true
 end

@@ -7,6 +7,12 @@ FactoryGirl.define do
     age 25
     numbers 10
     level 1
+    title 'title'
+    city 'city'
+    address 'address'
+    country 'country'
+    latitude 1.123
+    longitude -1.123
   end
 end
 

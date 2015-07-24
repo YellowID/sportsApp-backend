@@ -15,6 +15,12 @@ module V1
       expose(:user, using: Entities::User)
       expose(:sport_type, using: Entities::SportType)
       expose(:start_at, documentation: { type: 'string' })
+      expose(:title, documentation: { type: 'string' })
+      expose(:country, documentation: { type: 'string' })
+      expose(:city, documentation: { type: 'string' })
+      expose(:address, documentation: { type: 'string' })
+      expose(:latitude, documentation: { type: 'decimal' })
+      expose(:longitude, documentation: { type: 'decimal' })
       expose(:age, documentation: { type: 'integer' })
       expose(:numbers, documentation: { type: 'integer' })
       expose(:level, documentation: { type: 'string' })
@@ -48,6 +54,12 @@ module V1
         requires :age, type: Integer
         requires :numbers, type: Integer
         requires :level, type: Integer
+        requires :title, type: String
+        requires :country, type: String
+        requires :city, type: String
+        requires :address, type: String
+        requires :latitude, type: Float
+        requires :longitude, type: Float
       end
 
       post do
@@ -56,12 +68,18 @@ module V1
           start_at: params[:start_at],
           age: params[:age],
           numbers: params[:numbers],
-          level: params[:level]
+          level: params[:level],
+          title: params[:title],
+          country: params[:country],
+          city: params[:city],
+          address: params[:address],
+          latitude: params[:latitude],
+          longitude: params[:longitude]
         )
 
         current_user.participate_games << game
 
-        present game, with: Entities::Game
+        present game, with: Entities::FullGame
       end
 
       route_param :id do

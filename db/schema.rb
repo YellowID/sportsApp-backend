@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720233034) do
+ActiveRecord::Schema.define(version: 20150724201441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,12 @@ ActiveRecord::Schema.define(version: 20150720233034) do
     t.integer  "level"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
+    t.string   "country"
+    t.string   "city"
+    t.string   "address"
+    t.decimal  "latitude",      precision: 15, scale: 10
+    t.decimal  "longitude",     precision: 15, scale: 10
   end
 
   add_index "games", ["sport_type_id"], name: "index_games_on_sport_type_id", using: :btree
