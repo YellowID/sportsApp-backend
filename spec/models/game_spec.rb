@@ -11,6 +11,7 @@ describe Game do
   it { should belong_to(:user) }
   it { should belong_to(:sport_type) }
 
+  it { should have_many(:invitations) }
 end
 
 
