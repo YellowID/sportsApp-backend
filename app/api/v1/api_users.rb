@@ -3,6 +3,7 @@ module V1
     class User < Grape::Entity
       expose(:id, documentation: { type: 'integer' })
       expose(:provider, documentation: { type: 'string' })
+      expose(:avatar, documentation: { type: 'string' })
       expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
       expose(:age, documentation: { type: 'integer' })
@@ -11,6 +12,7 @@ module V1
     class FullUser < Grape::Entity
       expose(:id, documentation: { type: 'integer' })
       expose(:provider, documentation: { type: 'string' })
+      expose(:avatar, documentation: { type: 'string' })
       expose(:oauth_token, documentation: { type: 'string' })
       expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
@@ -42,6 +44,7 @@ module V1
             u.chat_password = SecureRandom.base64(8)
             u.name = params[:name]
             u.email = params[:email]
+            u.avatar = params[:avatar]
           end.save!
 
           user.sport_type_ids = SportType.ids
