@@ -9,5 +9,6 @@ module V1
     mount ApiUsers
     mount ApiSportType
     mount ApiGames
+    mount ApiInvitation
   end
 end
