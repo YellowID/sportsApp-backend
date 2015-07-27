@@ -55,11 +55,11 @@ module V1
         requires :numbers, type: Integer
         requires :level, type: Integer
         requires :title, type: String
-        requires :country, type: String
-        requires :city, type: String
-        requires :address, type: String
         requires :latitude, type: Float
         requires :longitude, type: Float
+        optional :country, type: String
+        optional :city, type: String
+        optional :address, type: String
       end
 
       post do
