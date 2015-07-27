@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+#
+%w[football squash tennis basketball volleyball hockey handball].each do |type|
+  SportType.create!(name: type)
+end
+
