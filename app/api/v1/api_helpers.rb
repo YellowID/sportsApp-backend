@@ -15,6 +15,12 @@ module V1
     def result_success
       { result: :success }
     end
+
+    def update_attributes(attrs)
+      attrs.each_with_object({}) do |param, hs|
+        hs[param] = params[param] if params.has_key?(param)
+      end
+    end
   end
 end
 

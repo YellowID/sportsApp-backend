@@ -17,10 +17,26 @@ module V1
       expose(:token, documentation: { type: 'string' })
       expose(:chat_password, documentation: { type: 'string' })
     end
+
+    class UserSetting < Grape::Entity
+      expose(:age, documentation: { type: 'integer' })
+      expose(:level, documentation: { type: 'integer' })
+      expose(:sport_types) { |user| user.sport_type_ids }
+    end
   end
 
   class ApiUsers < Grape::API
     resource :users do
+      params do
+        requires :user_token, type: String
+      end
+
+      desc 'Get user settings'
+
+      get :settings do
+        present current_user, with: Entities::UserSetting
+      end
+
       desc 'Authenticate user'
 
       params do
@@ -53,7 +69,7 @@ module V1
       end
 
       route_param :id do
-        desc 'Get  ser info'
+        desc 'Get ser info'
 
         get do
           user = User.find(params[:id])
@@ -62,18 +78,18 @@ module V1
         end
       end
 
-      params do
-        requires :user_token, type: String
-      end
-
-      desc 'Set age'
+      desc 'Set user settings'
 
       params do
         requires :age, type: Integer
+        requires :level, type: Integer
+        requires :sport_type_ids, type: Array
+        requires :user_token, type: String
       end
 
-      patch :age do
-        current_user.update(age: params[:age])
+      patch :settings do
+        current_user.update(update_attributes(%i(age level)))
+        current_user.sport_type_ids = params[:sport_type_ids]
 
         result_success
       end

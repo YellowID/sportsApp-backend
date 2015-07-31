@@ -33,14 +33,16 @@ describe V1::ApiUsers, type: :request do
     end
   end
 
-  describe 'PATCH /users/age' do
-    let(:user) { create(:user, age: 1) }
+  describe 'PATCH /users/settings' do
+    let!(:first_sport_type) { create(:sport_type) }
+    let!(:second_sport_type) { create(:sport_type) }
+    let(:user) { create(:user, age: 2, level: 2) }
 
     it 'changes age' do
-      patch api("/users/age", user), { age: 2 }
+      patch api("/users/settings", user), { age: 1, level: 3, sport_type_ids: [first_sport_type.id] }
 
       expect(response.status).to eq(200)
-      expect(user.reload.age).to eq(2)
+      expect(user.reload.age).to eq(1)
     end
   end
 

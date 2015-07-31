@@ -29,6 +29,20 @@ module V1
   end
 
   class ApiGames < Grape::API
+    resource :games do
+      route_param :id do
+        resource :members do
+          desc 'members list'
+
+          get do
+            game = Game.find(params[:id])
+
+            present game.members, with: Entities::User
+          end
+        end
+      end
+    end
+
     params do
       requires :user_token, type: String
     end
@@ -105,13 +119,9 @@ module V1
         end
 
         patch do
-          attributes = %i(start_at age numbers level).each_with_object({}) do |param, hs|
-            hs[param] = params[param] if params.has_key?(param)
-          end
-
           game = current_user.games.find(params[:id])
 
-          game.update(attributes)
+          game.update(update_attributes(%i(start_at age numbers level)))
 
           present game, with: Entities::Game
         end
@@ -124,7 +134,7 @@ module V1
           result_success
         end
 
-        resource :member do
+        resource :members do
 
           desc 'take participate in game'
 

@@ -87,12 +87,12 @@ describe V1::ApiGames, type: :request do
     end
   end
 
-  describe 'POST /games/:id/member' do
+  describe 'POST /games/:id/members' do
     let(:game) { create(:game, user: user) }
     let(:member) {create(:user) }
 
     it 'add member to game' do
-      post api("/games/#{game.id}/member", member)
+      post api("/games/#{game.id}/members", member)
 
       expect(response.status).to eq(201)
       expect(member.participate_games.to_a.include?(game)).to be_truthy
