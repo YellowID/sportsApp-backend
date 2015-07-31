@@ -2,11 +2,8 @@ module V1
   module Entities
     class User < Grape::Entity
       expose(:id, documentation: { type: 'integer' })
-      expose(:provider, documentation: { type: 'string' })
       expose(:avatar, documentation: { type: 'string' })
-      expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
-      expose(:age, documentation: { type: 'integer' })
     end
 
     class FullUser < Grape::Entity
