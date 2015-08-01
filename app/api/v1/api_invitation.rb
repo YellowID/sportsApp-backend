@@ -62,7 +62,7 @@ module V1
           user_id: params[:user_id],
           game_id: params[:game_id])
 
-        present post_invitation, with: Entities::Invitation
+        result_success
       end
 
       route_param :id do
