@@ -238,6 +238,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    state_machine (1.2.0)
     table_print (1.5.3)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
@@ -299,6 +300,7 @@ DEPENDENCIES
   shoulda-matchers
   spring
   spring-commands-rspec
+  state_machine
   table_print
   thin
   timecop

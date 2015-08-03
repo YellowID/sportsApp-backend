@@ -30,6 +30,16 @@ module V1
 
   class ApiGames < Grape::API
     resource :games do
+      resource :cityes do
+        desc 'All games cityes'
+
+        get do
+          cityes = Game.pluck(:city).uniq.compact
+
+          present cityes
+        end
+      end
+
       route_param :id do
         resource :members do
           desc 'members list'

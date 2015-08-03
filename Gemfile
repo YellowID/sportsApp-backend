@@ -17,6 +17,8 @@ gem 'grape-entity'
 gem 'grape-swagger'
 gem 'grape-swagger-ui'
 
+gem 'state_machine'
+
 group :test, :development do
   gem 'awesome_print'
   gem 'table_print'
