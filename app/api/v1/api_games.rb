@@ -63,9 +63,9 @@ module V1
       }
 
       get do
-        games = (current_user.participate_games + current_user.games).compact
+        active_games = (current_user.participate_games + current_user.games).compact
 
-        present games, with: Entities::Game
+        present [[active_games, with: Entities::Game], [current_user.rejected_games, with: Entities::Game]]
       end
 
       desc 'Create new game', {
