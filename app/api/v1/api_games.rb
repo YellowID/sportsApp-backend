@@ -63,7 +63,7 @@ module V1
       }
 
       get do
-        games = current_user.participate_games
+        games = (current_user.participate_games + current_user.games).compact
 
         present games, with: Entities::Game
       end
@@ -142,42 +142,6 @@ module V1
           current_user.games.find(params[:id]).destroy!
 
           result_success
-        end
-
-        resource :members do
-
-          desc 'take participate in game'
-
-          post do
-            game = Game.find(params[:id])
-
-            game.members << current_user
-
-            result_success
-          end
-
-          desc 'Leave game'
-
-          delete do
-            game = Game.find(params[:id])
-
-            game.members.delete(current_user)
-
-            result_success
-          end
-
-          desc 'refuse member in game'
-
-          route_param :member_id do
-            delete do
-              game = current_user.games.find(params[:id])
-              member = User.find(params[:member_id])
-
-              game.members.delete(member)
-
-              result_success
-            end
-          end
         end
       end
     end

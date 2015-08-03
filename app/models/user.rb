@@ -8,8 +8,6 @@ class User < ActiveRecord::Base
   has_many :game_members
   has_many :participate_games, -> { where("state = ? OR state = ?", :confirmed, :possible) }, through: :game_members, source: :game
   has_many :rejected_games, -> { where("state = ? OR state = ?", :rejected, :nil) }, through: :game_members, source: :game
-  has_many :invitations
-  has_many :post_invitations, foreign_key: :owner_id, class: Invitation
 
   def sport_setting(sport_type)
     user_sport_type_settings.find_by(sport_type: sport_type)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803215444) do
+ActiveRecord::Schema.define(version: 20150803225601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,18 +49,6 @@ ActiveRecord::Schema.define(version: 20150803215444) do
 
   add_index "games", ["sport_type_id"], name: "index_games_on_sport_type_id", using: :btree
   add_index "games", ["user_id"], name: "index_games_on_user_id", using: :btree
-
-  create_table "invitations", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "game_id"
-    t.integer  "owner_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "invitations", ["game_id"], name: "index_invitations_on_game_id", using: :btree
-  add_index "invitations", ["owner_id"], name: "index_invitations_on_owner_id", using: :btree
-  add_index "invitations", ["user_id"], name: "index_invitations_on_user_id", using: :btree
 
   create_table "sport_types", force: :cascade do |t|
     t.string "name"
