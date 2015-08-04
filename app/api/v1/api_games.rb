@@ -31,12 +31,12 @@ module V1
   class ApiGames < Grape::API
     resource :games do
       resource :cityes do
-        desc 'All games cityes'
+        desc 'All games cities'
 
         get do
-          cityes = Game.pluck(:city).uniq.compact
+          cities = Game.pluck(:city).uniq.compact
 
-          present cityes
+          present cities
         end
       end
 
@@ -55,6 +55,7 @@ module V1
 
     params do
       requires :user_token, type: String
+      optional :city, type: String
     end
 
     resource :games do
@@ -63,9 +64,17 @@ module V1
       }
 
       get do
-        active_games = (current_user.participate_games + current_user.games).compact
+        my_games = (current_user.participate_games + current_user.games).compact
 
-        present [[active_games, with: Entities::Game], [current_user.rejected_games, with: Entities::Game]]
+        public_games = current_user.rejected_games
+
+        if params[:city].present?
+          cities_games = Game.where(city: params[:city]) - my_games - public_games
+          public_games += cities_games
+        end
+
+
+        present [[my_games, with: Entities::Game], [public_games, with: Entities::Game]]
       end
 
       desc 'Create new game', {
