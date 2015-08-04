@@ -73,8 +73,8 @@ module V1
           public_games += cities_games
         end
 
-
-        present [[my_games, with: Entities::Game], [public_games, with: Entities::Game]]
+        present :my, my_games, with: Entities::Game
+        present :public, public_games, with: Entities::Game
       end
 
       desc 'Create new game', {
