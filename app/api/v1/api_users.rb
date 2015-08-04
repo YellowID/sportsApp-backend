@@ -37,6 +37,22 @@ module V1
         present current_user, with: Entities::UserSetting
       end
 
+      resource :find_by_name do
+
+        params do
+          optional :name, type: String
+        end
+
+        desc 'Get ser info by user name'
+
+        get  do
+          users = User.where("name ILIKE ?", "%#{params[:name]}%")
+
+          present users, with: Entities::User
+        end
+      end
+
+
       desc 'Authenticate user'
 
       params do
