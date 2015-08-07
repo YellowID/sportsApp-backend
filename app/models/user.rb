@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  validates :oauth_token, :provider, presence: true
+  validates :provider_id, :provider, presence: true
 
   has_many :games
   has_many :user_sport_type_settings

@@ -10,7 +10,7 @@ module V1
       expose(:id, documentation: { type: 'integer' })
       expose(:provider, documentation: { type: 'string' })
       expose(:avatar, documentation: { type: 'string' })
-      expose(:oauth_token, documentation: { type: 'string' })
+      expose(:provider_id, documentation: { type: 'string' })
       expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
       expose(:age, documentation: { type: 'integer' })
@@ -58,14 +58,14 @@ module V1
       params do
         optional :name, type: String
         optional :email, type: String
-        requires :oauth_token, type: String
         requires :provider, type: String
+        requires :provider_id, type: String
       end
 
       post :authentication do
         user = User.find_or_initialize_by(
           provider: params[:provider],
-          oauth_token: params[:oauth_token]
+          provider_id: params[:provider_id]
         )
 
         unless user.persisted?

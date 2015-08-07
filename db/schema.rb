@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803225601) do
+ActiveRecord::Schema.define(version: 20150807102437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20150803225601) do
     t.string  "token"
     t.string  "avatar"
     t.integer "level"
+    t.string  "provider_id"
   end
 
   add_index "users", ["provider", "oauth_token"], name: "index_users_on_provider_and_oauth_token", unique: true, using: :btree
