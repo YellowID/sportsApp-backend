@@ -58,6 +58,7 @@ module V1
       params do
         optional :name, type: String
         optional :email, type: String
+        optional :avatar, type: String
         requires :provider, type: String
         requires :provider_id, type: String
       end
