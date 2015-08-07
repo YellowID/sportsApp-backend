@@ -26,7 +26,7 @@ module V1
       end
 
        patch do
-         game_member = current_user.game_members.find_by(game_id: params[:game_id])
+         game_member = current_user.game_members.find_or_create_by(game_id: params[:game_id])
 
          case params[:state]
          when 1

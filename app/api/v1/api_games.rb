@@ -28,6 +28,19 @@ module V1
       expose(:level, documentation: { type: 'string' })
       expose(:members, using: Entities::User)
     end
+
+     class GameWithState < Grape::Entity
+      expose(:id, documentation: { type: 'integer' })
+      expose(:user_id, documentation: { type: 'integer' })
+      expose(:sport_type_id, documentation: { type: 'integer' })
+      expose(:start_at, documentation: { type: 'string' })
+      expose(:age, documentation: { type: 'integer' })
+      expose(:numbers, documentation: { type: 'integer' })
+      expose(:level, documentation: { type: 'string' })
+      expose(:title, documentation: { type: 'string' })
+      expose(:address, documentation: { type: 'string' })
+      expose(:participate_status, documentation: { type: 'string' })
+     end
   end
 
   class ApiGames < Grape::API
@@ -66,16 +79,24 @@ module V1
       }
 
       get do
-        my_games = (current_user.participate_games + current_user.games).compact
+        my_games = (
+          current_user.participate_games.preload(:game_members) +
+          current_user.games.preload(:game_members)
+        ).compact
 
-        public_games = current_user.rejected_games
+        public_games = params[:city].present? ? Game.where(city: params[:city]) - my_games : []
 
-        if params[:city].present?
-          cities_games = Game.where(city: params[:city]) - my_games - public_games
-          public_games += cities_games
+        my_games.map do |game|
+          participate_status = game.state(current_user.id)
+
+          game.define_singleton_method(:participate_status) do
+            participate_status
+          end
+
+          game
         end
 
-        present :my, my_games, with: Entities::Game
+        present :my, my_games, with: Entities::GameWithState
         present :public, public_games, with: Entities::Game
       end
 

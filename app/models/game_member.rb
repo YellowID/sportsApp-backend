@@ -2,7 +2,9 @@ class GameMember < ActiveRecord::Base
   belongs_to :game
   belongs_to :user
 
-  state_machine :state, initial: nil do
+  after_initialize :set_initial_status
+
+  state_machine :state, initial: :possible do
     event :to_confirmed do
       transition all => :confirmed
     end
@@ -14,5 +16,11 @@ class GameMember < ActiveRecord::Base
     event :to_possible do
       transition all => :possible
     end
+  end
+
+  private
+
+  def set_initial_status
+    self.state ||= :possible
   end
 end
