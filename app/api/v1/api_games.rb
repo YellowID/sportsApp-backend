@@ -8,12 +8,14 @@ module V1
       expose(:age, documentation: { type: 'integer' })
       expose(:numbers, documentation: { type: 'integer' })
       expose(:level, documentation: { type: 'string' })
+      expose(:title, documentation: { type: 'string' })
+      expose(:address, documentation: { type: 'string' })
     end
 
     class FullGame < Grape::Entity
       expose(:id, documentation: { type: 'integer' })
-      expose(:user, using: Entities::User)
-      expose(:sport_type, using: Entities::SportType)
+      expose(:user_id, documentation: { type: 'integer' })
+      expose(:sport_type_id, documentation: { type: 'integer' })
       expose(:start_at, documentation: { type: 'string' })
       expose(:title, documentation: { type: 'string' })
       expose(:country, documentation: { type: 'string' })
