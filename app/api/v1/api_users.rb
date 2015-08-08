@@ -61,6 +61,7 @@ module V1
         optional :avatar, type: String
         requires :provider, type: String
         requires :provider_id, type: String
+        requires :oauth_token, type: String
       end
 
       post :authentication do
@@ -69,20 +70,23 @@ module V1
           provider_id: params[:provider_id]
         )
 
-        unless user.persisted?
-          user.tap do |u|
-            u.chat_password = SecureRandom.base64(8)
-            u.name = params[:name]
-            u.email = params[:email]
-            u.avatar = params[:avatar]
-          end.save!
+        new_user_state =
+          if user.new_record?
+            user.tap do |u|
+              u.chat_password = SecureRandom.base64(8)
+              u.name = params[:name]
+              u.email = params[:email]
+              u.avatar = params[:avatar]
+              u.oauth_token = params[:oauth_token]
+            end.save!
 
-          user.sport_type_ids = SportType.ids
-        end
+            user.sport_type_ids = SportType.ids
+          end
 
         user.generate_token!
 
-        present user, with: Entities::FullUser
+        present :user, user, with: Entities::FullUser
+        present :new, new_user_state.present?
       end
 
       route_param :id do
