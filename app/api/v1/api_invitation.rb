@@ -29,11 +29,11 @@ module V1
          game_member = current_user.game_members.find_or_create_by(game_id: params[:game_id])
 
          case params[:state]
-         when 1
+         when 'confirmed'
            game_member.to_confirmed
-         when 2
+         when 'possible'
            game_member.to_possible
-         when 3
+         when 'rejected'
            game_member.to_rejected
          end
 
@@ -42,4 +42,3 @@ module V1
     end
   end
 end
-
