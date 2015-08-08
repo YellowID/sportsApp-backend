@@ -9,6 +9,6 @@ class Game < ActiveRecord::Base
     :numbers, :title, :latitude, :longitude, presence: true
 
   def state(user_id)
-    game_members.find_by(user_id: user_id).try(:state)
+    game_members.select { |game_member| game_member.user_id ==  user_id }.first.try(:state)
   end
 end

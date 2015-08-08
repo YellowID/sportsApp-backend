@@ -81,7 +81,8 @@ module V1
       get do
         my_games = (
           current_user.participate_games.preload(:game_members) +
-          current_user.games.preload(:game_members)
+          current_user.games.preload(:game_members) +
+          current_user.rejected_games.preload(:game_members)
         ).compact
 
         public_games = params[:city].present? ? Game.where(city: params[:city]) - my_games : []
