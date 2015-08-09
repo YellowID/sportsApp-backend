@@ -25,20 +25,34 @@ module V1
         requires :state, type: Integer
       end
 
-       patch do
-         game_member = current_user.game_members.find_or_create_by(game_id: params[:game_id])
+      patch do
+        game_member = current_user.game_members.find_or_create_by(game_id: params[:game_id])
 
-         case params[:state]
-         when 'confirmed'
-           game_member.to_confirmed
-         when 'possible'
-           game_member.to_possible
-         when 'rejected'
-           game_member.to_rejected
-         end
+        case params[:state]
+        when 'confirmed'
+          game_member.to_confirmed
+        when 'possible'
+          game_member.to_possible
+        when 'rejected'
+          game_member.to_rejected
+        end
 
         result_success
       end
+
+      desc 'Sent invite email'
+
+      params do
+        requires :user_token, type: String
+        requires :email, type: String
+      end
+
+      post do
+        UserMailer.invite_email(current_user, params[:email]).deliver
+
+        result_success
+      end
+
     end
   end
 end
