@@ -56,28 +56,28 @@ module V1
       desc 'Authenticate user'
 
       params do
-        optional :name, type: String
-        optional :email, type: String
-        optional :avatar, type: String
         requires :provider, type: String
-        requires :provider_id, type: String
         requires :oauth_token, type: String
       end
 
       post :authentication do
+
+        provider_info = ClientProvider.new(params[:provider], params[:oauth_token]).get_info
+
+        error!('Unauthorized. Invalid or expired token.', 401) unless provider_info
+
         user = User.find_or_initialize_by(
           provider: params[:provider],
-          provider_id: params[:provider_id]
+          provider_id: provider_info[:id]
         )
 
         new_user_state =
           if user.new_record?
             user.tap do |u|
               u.chat_password = SecureRandom.base64(8)
-              u.name = params[:name]
-              u.email = params[:email]
-              u.avatar = params[:avatar]
-              u.oauth_token = params[:oauth_token]
+              u.name = provider_info[:name]
+              u.email = provider_info[:email]
+              u.avatar = provider_info[:avatar]
             end.save!
 
             user.sport_type_ids = SportType.ids

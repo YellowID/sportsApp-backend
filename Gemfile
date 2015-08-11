@@ -19,6 +19,8 @@ gem 'grape-swagger-ui'
 
 gem 'state_machine'
 
+gem 'koala', '~> 2.0'
+
 group :test, :development do
   gem 'awesome_print'
   gem 'table_print'
