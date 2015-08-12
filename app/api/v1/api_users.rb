@@ -27,11 +27,11 @@ module V1
 
   class ApiUsers < Grape::API
     resource :users do
+      desc 'Get user settings'
+
       params do
         requires :user_token, type: String
       end
-
-      desc 'Get user settings'
 
       get :settings do
         present current_user, with: Entities::UserSetting
