@@ -79,11 +79,7 @@ module V1
       }
 
       get do
-        my_games = (
-          current_user.participate_games.preload(:game_members) +
-          current_user.games.preload(:game_members) +
-          current_user.rejected_games.preload(:game_members)
-        ).compact
+        my_games = current_user.my_games.includes(:game_members)
 
         public_games = params[:city].present? ? Game.where(city: params[:city]) - my_games : []
 
