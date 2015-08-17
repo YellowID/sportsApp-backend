@@ -33,7 +33,7 @@ module V1
       params do
         requires :user_token, type: String
         requires :game_id, type: Integer
-        requires :state, type: Integer
+        requires :state, type: String
       end
       patch do
         game_member = current_user.game_members.find_or_create_by(game_id: params[:game_id])
