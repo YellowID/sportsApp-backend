@@ -26,6 +26,7 @@ module V1
       expose(:age, documentation: { type: 'integer' })
       expose(:numbers, documentation: { type: 'integer' })
       expose(:level, documentation: { type: 'string' })
+      expose(:participate_status, documentation: { type: 'string' })
       expose(:members, using: Entities::User)
     end
 
@@ -132,7 +133,7 @@ module V1
 
         current_user.participate_games << game
 
-        present game, with: Entities::FullGame
+        present game, with: Entities::Game
       end
 
       route_param :id do
@@ -142,6 +143,12 @@ module V1
 
         get do
           game = Game.find(params[:id])
+
+          participate_status = game.state(current_user.id)
+
+          game.define_singleton_method(:participate_status) do
+            participate_status
+          end
 
           present game, with: Entities::FullGame
         end
