@@ -162,12 +162,18 @@ module V1
           optional :age, type: Integer
           optional :numbers, type: Integer
           optional :level, type: Integer
+          optional :title, type: String
+          optional :latitude, type: Float
+          optional :longitude, type: Float
+          optional :country, type: String
+          optional :city, type: String
+          optional :address, type: String
         end
 
         patch do
           game = current_user.games.find(params[:id])
 
-          game.update(update_attributes(%i(start_at age numbers level)))
+          game.update(update_attributes(%i(start_at age numbers level title latitude longitude country city address)))
 
           present game, with: Entities::Game
         end
