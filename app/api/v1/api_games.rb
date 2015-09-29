@@ -82,7 +82,9 @@ module V1
       get do
         my_games = current_user.my_games.includes(:game_members)
 
-        public_games = params[:city].present? ? Game.where(city: params[:city]) - my_games : []
+        other_games = params[:city].present? ? Game.where(city: params[:city]) : Game.all
+
+        public_games = other_games - my_games
 
         my_games.map do |game|
           participate_status = game.state(current_user.id)
