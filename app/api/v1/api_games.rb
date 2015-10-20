@@ -12,36 +12,39 @@ module V1
       expose(:address, documentation: { type: 'string' })
     end
 
-    class FullGame < Grape::Entity
-      expose(:id, documentation: { type: 'integer' })
-      expose(:user_id, documentation: { type: 'integer' })
-      expose(:sport_type_id, documentation: { type: 'integer' })
-      expose(:start_at, documentation: { type: 'string' })
+    class GameWithState < Game
+      expose(:participate_status, documentation: { type: 'string' })
+    end
+
+    class FullGame < GameWithState
       expose(:title, documentation: { type: 'string' })
       expose(:country, documentation: { type: 'string' })
       expose(:city, documentation: { type: 'string' })
       expose(:address, documentation: { type: 'string' })
       expose(:latitude, documentation: { type: 'decimal' })
       expose(:longitude, documentation: { type: 'decimal' })
-      expose(:age, documentation: { type: 'integer' })
-      expose(:numbers, documentation: { type: 'integer' })
-      expose(:level, documentation: { type: 'string' })
-      expose(:participate_status, documentation: { type: 'string' })
       expose(:members, using: Entities::User)
     end
 
-     class GameWithState < Grape::Entity
-      expose(:id, documentation: { type: 'integer' })
-      expose(:user_id, documentation: { type: 'integer' })
-      expose(:sport_type_id, documentation: { type: 'integer' })
-      expose(:start_at, documentation: { type: 'string' })
-      expose(:age, documentation: { type: 'integer' })
-      expose(:numbers, documentation: { type: 'integer' })
-      expose(:level, documentation: { type: 'string' })
-      expose(:title, documentation: { type: 'string' })
-      expose(:address, documentation: { type: 'string' })
-      expose(:participate_status, documentation: { type: 'string' })
-     end
+    class MemeberGames < Grape::Entity
+      expose(:id, documentation: { type: 'integer' }) { |data| data.game.id }
+      expose(:user_id, documentation: { type: 'integer' }) { |data| data.game.user_id }
+      expose(:sport_type_id, documentation: { type: 'integer' }) { |data| data.game.sport_type_id }
+      expose(:start_at, documentation: { type: 'string' }) { |data| data.game.start_at }
+      expose(:age, documentation: { type: 'integer' }) { |data| data.game.age }
+      expose(:numbers, documentation: { type: 'integer' }) { |data| data.game.numbers }
+      expose(:level, documentation: { type: 'string' }) { |data| data.game.level }
+      expose(:title, documentation: { type: 'string' }) { |data| data.game.title }
+      expose(:address, documentation: { type: 'string' }) { |data| data.game.address }
+      expose(:participate_status, documentation: { type: 'string' }) { |data| data.participate_status }
+      expose(:title, documentation: { type: 'string' }) { |data| data.game.title }
+      expose(:country, documentation: { type: 'string' }) { |data| data.game.country }
+      expose(:city, documentation: { type: 'string' }) { |data| data.game.city }
+      expose(:address, documentation: { type: 'string' }) { |data| data.game.address }
+      expose(:latitude, documentation: { type: 'decimal' }) { |data| data.game.latitude }
+      expose(:longitude, documentation: { type: 'decimal' }) { |data| data.game.longitude }
+      expose(:members) { |data| data.members }
+    end
   end
 
   class ApiGames < Grape::API
@@ -63,7 +66,16 @@ module V1
           get do
             game = Game.find(params[:id])
 
-            present game.members, with: Entities::User
+            members = game.game_members.includes(:user).map do |member|
+              user = member.user
+
+              {
+                id: user.id,
+                avatar: user.avatar,
+                name: user.name,
+                participate_status: member.state
+              }
+            end
           end
         end
       end
@@ -148,11 +160,24 @@ module V1
 
           participate_status = game.state(current_user.id)
 
-          game.define_singleton_method(:participate_status) do
-            participate_status
+          members = game.game_members.includes(:user).map do |member|
+            user = member.user
+
+            {
+              id: user.id,
+              avatar: user.avatar,
+              name: user.name,
+              participate_status: member.state
+            }
           end
 
-          present game, with: Entities::FullGame
+          data = OpenStruct.new(
+            game: game,
+            participate_status: participate_status,
+            members: members
+          )
+
+          present data, with: Entities::MemeberGames
         end
 
         desc 'Edit game', {
