@@ -20,4 +20,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  invite_email:
+    subject: 'Join to StartSport'
+    text:
+      hello: 'Hi!'
+      paragraph1: "%{name} has invited you to be part of a team in StartSport."
+      paragraph1: "StartSport allows you to create teams of friends to enjoy sports together."
+
+

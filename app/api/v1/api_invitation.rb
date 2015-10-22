@@ -7,6 +7,8 @@ module V1
         requires :email, type: String
       end
       post do
+        I18n.locale = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+
         UserMailer.invite_email(current_user, params[:email]).deliver
 
         result_success

@@ -1,0 +1,7 @@
+ru:
+  invite_email:
+    subject: 'Присоединяйтесь к StartSport'
+    text:
+      hello: 'Привет!'
+      paragraph1: "Пользователь %{name} приглашает вас стать частью команды в приложении StartSport."
+      paragraph2: "StartSport позволяет собирать команды друзей для спортивных игр."

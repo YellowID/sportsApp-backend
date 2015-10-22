@@ -3,7 +3,6 @@ class UserMailer < ActionMailer::Base
 
   def invite_email(user, email)
     @user = user
-    mail(to: email, subject: 'Join to StartSport')
+    mail(to: email, subject: I18n.t('invite_email.subject'))
   end
 end
-

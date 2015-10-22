@@ -4,12 +4,8 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Join to StartSport</h1>
-    <p>
-      You have been invited by <%= @user.name %>
-    </p>
-    <p>
-      To visit the site, just follow this link: link
-    </p>
+    <h1><%= I18n.t('invite_email.text.hello') %></h1>
+    <p><%= I18n.t('invite_email.text.paragraph1', name: @user.name) %></p>
+    <p><%= I18n.t('invite_email.text.paragraph2') %></p>
   </body>
 </html>
