@@ -92,20 +92,18 @@ module V1
       }
 
       get do
-        my_games = current_user.my_games.includes(:game_members)
+        my_games = current_user.participate_games.includes(:game_members).order(start_at: :desc)
 
         other_games = params[:city].present? ? Game.where(city: params[:city]) : Game.all
 
-        public_games = other_games - my_games
+        public_games = other_games.where.not(id: my_games.ids).order(start_at: :desc)
 
-        my_games.map do |game|
+        my_games.each do |game|
           participate_status = game.state(current_user.id)
 
           game.define_singleton_method(:participate_status) do
             participate_status
           end
-
-          game
         end
 
         present :my, my_games, with: Entities::GameWithState
