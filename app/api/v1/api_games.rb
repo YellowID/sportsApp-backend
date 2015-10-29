@@ -66,8 +66,8 @@ module V1
           get do
             game = Game.find(params[:id])
 
-            members = game.game_members.includes(:user).map do |member|
-              user = member.user
+            members = game.game_members.where.not(state: :rejected).includes(:user).map do |member|
+              user = member.userd
 
               {
                 id: user.id,
@@ -160,7 +160,7 @@ module V1
 
           participate_status = game.state(current_user.id)
 
-          members = game.game_members.includes(:user).map do |member|
+          members = game.game_members.where.not(state: :rejected).includes(:user).map do |member|
             user = member.user
 
             {
