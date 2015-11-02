@@ -96,7 +96,7 @@ module V1
 
         other_games = params[:city].present? ? Game.where(city: params[:city]) : Game.all
 
-        public_games = other_games.where.not(id: my_games.ids).order(start_at: :desc)
+        public_games = other_games.where.not(id: my_games.map(&:id)).order(start_at: :desc)
 
         my_games.each do |game|
           participate_status = game.state(current_user.id)
