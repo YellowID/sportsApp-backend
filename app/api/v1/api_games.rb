@@ -67,7 +67,7 @@ module V1
             game = Game.find(params[:id])
 
             members = game.game_members.where.not(state: :rejected).includes(:user).map do |member|
-              user = member.userd
+              user = member.user
 
               {
                 id: user.id,
