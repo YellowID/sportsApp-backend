@@ -10,6 +10,7 @@ module V1
       expose(:id, documentation: { type: 'integer' })
       expose(:provider, documentation: { type: 'string' })
       expose(:avatar, documentation: { type: 'string' })
+      expose(:device_id, documentation: { type: 'string' })
       expose(:provider_id, documentation: { type: 'string' })
       expose(:email, documentation: { type: 'string' })
       expose(:name, documentation: { type: 'string' })
@@ -37,6 +38,19 @@ module V1
         present current_user, with: Entities::UserSetting
       end
 
+      desc 'Set user device ID'
+
+      params do
+        requires :user_token, type: String
+        requires :device_id, type: String
+      end
+
+      post :set_device_id do
+        current_user.update(device_id: params[:device_id])
+
+        result_success
+      end
+
       resource :find_by_name do
 
         params do
@@ -51,7 +65,6 @@ module V1
           present users, with: Entities::User
         end
       end
-
 
       desc 'Authenticate user'
 
