@@ -28,6 +28,8 @@ module V1
 
         game.members << user
 
+        ApnsNotification.new(user.device_id).invite(game.id)
+
         result_success
       end
 
