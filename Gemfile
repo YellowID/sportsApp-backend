@@ -18,7 +18,7 @@ gem 'grape-swagger'
 gem 'grape-swagger-ui'
 
 gem 'state_machine'
-
+gem 'rpush'
 gem 'koala', '~> 2.0'
 
 group :test, :development do
