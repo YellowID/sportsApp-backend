@@ -26,11 +26,14 @@ module V1
         user = User.find(params[:user_id])
         game = Game.find(params[:game_id])
 
-        game.members << user
+       if game.members.include?(user)
+         unprocessable_entity!("User #{user.id} has already added to game #{game.id}")
+       else
+          game.members << user
+          ApnsNotification.new(user.device_id).invite(game.id)
 
-        ApnsNotification.new(user.device_id).invite(game.id)
-
-        result_success
+          result_success
+        end
       end
 
       desc 'Set state to invitation'
