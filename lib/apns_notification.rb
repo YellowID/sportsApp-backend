@@ -3,7 +3,7 @@ class ApnsNotification
     @device_token = device_token
   end
 
-  def intive(game_id)
+  def invite(game_id)
     return unless @device_token
 
     create_notification do |notification|
