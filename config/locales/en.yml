@@ -25,6 +25,6 @@ en:
     text:
       hello: 'Hi!'
       paragraph1: "%{name} has invited you to be part of a team in StartSport."
-      paragraph1: "StartSport allows you to create teams of friends to enjoy sports together."
+      paragraph2: "StartSport allows you to create teams of friends to enjoy sports together."
 
 
