@@ -8,6 +8,8 @@ class Game < ActiveRecord::Base
   validates :user, :sport_type, :age, :start_at, :level,
     :numbers, :title, :latitude, :longitude, presence: true
 
+  scope :actual, -> { where('start_at > ?', Time.now.utc) }
+
   def state(user_id)
     game_members.select { |game_member| game_member.user_id ==  user_id }.first.try(:state)
   end

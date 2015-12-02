@@ -92,11 +92,11 @@ module V1
       }
 
       get do
-        my_games = current_user.participate_games.includes(:game_members).order(start_at: :asc)
+        my_games = current_user.my_games.actual.includes(:game_members).order(start_at: :asc)
 
         other_games = params[:city].present? ? Game.where(city: params[:city]) : Game.all
 
-        public_games = other_games.where.not(id: my_games.map(&:id)).order(start_at: :asc)
+        public_games = other_games.actual.where.not(id: my_games.map(&:id)).order(start_at: :asc)
 
         my_games.each do |game|
           participate_status = game.state(current_user.id)
