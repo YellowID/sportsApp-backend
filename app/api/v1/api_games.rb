@@ -10,6 +10,7 @@ module V1
       expose(:level, documentation: { type: 'string' })
       expose(:title, documentation: { type: 'string' })
       expose(:address, documentation: { type: 'string' })
+      expose(:note, documentation: { type: 'string' })
     end
 
     class GameWithState < Game
@@ -43,6 +44,7 @@ module V1
       expose(:address, documentation: { type: 'string' }) { |data| data.game.address }
       expose(:latitude, documentation: { type: 'decimal' }) { |data| data.game.latitude }
       expose(:longitude, documentation: { type: 'decimal' }) { |data| data.game.longitude }
+      expose(:note, documentation: { type: 'decimal' }) { |data| data.game.note }
       expose(:members) { |data| data.members }
     end
   end
@@ -126,6 +128,7 @@ module V1
         optional :country, type: String
         optional :city, type: String
         optional :address, type: String
+        optional :note, type: String
       end
 
       post do
@@ -140,7 +143,8 @@ module V1
           city: params[:city],
           address: params[:address],
           latitude: params[:latitude],
-          longitude: params[:longitude]
+          longitude: params[:longitude],
+          note: params[:note]
         )
 
         current_user.participate_games << game
@@ -193,12 +197,13 @@ module V1
           optional :country, type: String
           optional :city, type: String
           optional :address, type: String
+          optional :note, type: String
         end
 
         patch do
           game = current_user.games.find(params[:id])
 
-          game.update(update_attributes(%i(start_at age numbers level title latitude longitude country city address)))
+          game.update(update_attributes(%i(start_at age numbers level title latitude longitude country city address note)))
 
           present game, with: Entities::Game
         end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151107083045) do
+ActiveRecord::Schema.define(version: 20160104173025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20151107083045) do
     t.string   "address"
     t.decimal  "latitude",      precision: 15, scale: 10
     t.decimal  "longitude",     precision: 15, scale: 10
+    t.string   "note"
   end
 
   add_index "games", ["sport_type_id"], name: "index_games_on_sport_type_id", using: :btree
